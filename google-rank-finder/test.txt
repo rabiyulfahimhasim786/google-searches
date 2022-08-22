@@ -1,0 +1,15 @@
+#refereances 
+
+#finding element in list - https://appdividend.com/2022/05/30/how-to-find-element-in-list-in-python/
+
+#creating a list - https://tutorial.eyehunts.com/python/create-a-list-with-for-loop-python-example-code/
+
+#https://realpython.com/list-comprehension-python/
+
+google searches using python
+
+https://www.geeksforgeeks.org/how-to-get-rank-of-page-in-google-search-results-using-beautifulsoup/
+
+https://www.geeksforgeeks.org/scrape-google-search-results-using-python-beautifulsoup/?ref=rp
+
+https://www.geeksforgeeks.org/performing-google-search-using-python-code/
