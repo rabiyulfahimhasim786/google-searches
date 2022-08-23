@@ -21,6 +21,7 @@ def getting(request):
 
 def my_form(request):
   if request.method == "POST":
+    #MyModel.objects.get
     title = request.POST.get('name')
     website = request.POST.get('web')
     #print(title)
@@ -44,10 +45,11 @@ def my_form(request):
     streaming = squares
     index = streaming.index(website)
     ranking = index+1
-    print('The rank of your site is:', ranking)#index+1)
+    rankings = "Google rank of your site is:"+str(ranking) #index+1)
     form = MyForm(request.POST)
     if form.is_valid():
       form.save()
+    return render(request, 'test.html', {'ranking': rankings})
   else:
       form = MyForm()
   return render(request, 'index.html', {'form': form})
@@ -58,3 +60,18 @@ def my_form(request):
  #       title = request.POST.get('quantity')
  #       print(title)
  #   return render(request, "home.html", context)
+
+from django.shortcuts import render
+
+def variable(request):
+    #testvar = 'value'
+    testvar = MyModel.objects.all()
+    #rank = MyModel.objects.latest('name')
+    #print(rank)
+    #rank = MyModel.objects.last()
+    #rank = MyModel.objects.filter(name='byjus').last()
+    #rank = MyModel.objects.latest('id')
+    #rank = list(MyModel.objects.all())[-1]
+    rank = MyModel.objects.latest('id')
+    print(rank)
+    return render(request, 'i.html', {'testvar': testvar, 'rank': rank})

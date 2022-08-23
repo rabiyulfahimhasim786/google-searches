@@ -1,12 +1,10 @@
 <div class="container">
-    <form method="POST">
+    <form method="GET">
       <fieldset>
         <legend>Form</legend>
         {% csrf_token %}
-        {{ form.as_p }}
         {{ ranking }}
         <p></p>
-        <button type="submit" class="btn btn-primary">Submit</button>
       </fieldset>
     </form>
 </div>
