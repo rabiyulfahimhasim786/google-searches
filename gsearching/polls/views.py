@@ -3,25 +3,40 @@ from django.shortcuts import render
 # Create your views here.
 from django.http import HttpResponse
 from googlesearch import search
+def index(request):
+    return HttpResponse("Hello, world!")
 
-# Create your views here.
-from django.http import HttpResponse
 
-
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
-from .models import MyModel
-from .forms import MyForm
+from datetime import datetime
+
+from .models import Person
+from .forms import SubscribeForm
 
 def index(request):
-    return HttpResponse("Hello, world.")
+    return HttpResponse("Hello, world!")
+
+import pandas as pd
+import sqlite3
+from sqlite3 import Error
+
+def csv(request):
+    db_file = './db.sqlite3'
+    conn = sqlite3.connect(db_file, isolation_level=None,
+                       detect_types=sqlite3.PARSE_COLNAMES)
+    db_df = pd.read_sql_query("SELECT * FROM polls_person", conn)
+    db_df.to_csv('polls/static/data/database.csv', index=False)
+    return HttpResponse("Hello, world!")
 
 def getting(request):
-    books = MyModel.objects.all()
+    books = Person.objects.all()
     return render(request, 'get.html', {'books': books})
 
-def my_form(request):
-  if request.method == "POST":
-    #MyModel.objects.get
+
+def home(request):
+  # if this is a POST request we need to process the form data
+  if request.method == 'POST':
     title = request.POST.get('name')
     website = request.POST.get('web')
     #print(title)
@@ -46,32 +61,87 @@ def my_form(request):
     index = streaming.index(website)
     ranking = index+1
     rankings = "Google rank of your site is:"+str(ranking) #index+1)
-    form = MyForm(request.POST)
+    #form = MyForm(request.POST)
+    # create a form instance and populate it with data from the request:
+    form = SubscribeForm(request.POST)
+    # check whether it's valid:
     if form.is_valid():
-      form.save()
-    return render(request, 'test.html', {'ranking': rankings})
-  else:
-      form = MyForm()
+        name = form.cleaned_data['name']
+        web = form.cleaned_data['web']
+        p = Person(name=name, web=web, output=ranking, date_subscribed=datetime.now())
+        p.save()
+        # process the data in form.cleaned_data as required
+        
+        # redirect to a new URL:
+        return render(request, 'puts.html', {'ranking': rankings})
+  # if a GET (or any other method) we'll create a blank form    
+  else: 
+    form = SubscribeForm()
+
   return render(request, 'index.html', {'form': form})
 
-#def saveCriteria(request):
- ##   context = {}
- #   if request.method == "POST":
- #       title = request.POST.get('quantity')
- #       print(title)
- #   return render(request, "home.html", context)
-
-from django.shortcuts import render
 
 def variable(request):
     #testvar = 'value'
-    testvar = MyModel.objects.all()
+    testvar = Person.objects.all()
     #rank = MyModel.objects.latest('name')
     #print(rank)
     #rank = MyModel.objects.last()
     #rank = MyModel.objects.filter(name='byjus').last()
     #rank = MyModel.objects.latest('id')
     #rank = list(MyModel.objects.all())[-1]
-    rank = MyModel.objects.latest('id')
+    rank = Person.objects.latest('id')
     print(rank)
     return render(request, 'i.html', {'testvar': testvar, 'rank': rank})
+
+
+def excel(request):
+  # if this is a POST request we need to process the form data
+  if request.method == 'POST':
+    key = request.POST.get('name')
+    webs = request.POST.get('web')
+    #print(title)
+    #print(website)
+    try:
+        from googlesearch import search
+    except ImportError:
+        print("No module named 'google' found")
+    #website = # need a exact site name including /
+    # to search
+    query = key#"geeksforgeeks" # keyword
+    #rank, rank_list = 1, ""
+    squares = []
+    for j in search(query, tld="co.in", num=10, stop=10, pause=2):
+        #print(j)
+        squares.append(j)
+    #print(squares)
+# app.py
+
+#streaming = ['netflix', 'hulu', 'disney+', 'appletv+']
+    streaming = squares
+    index = streaming.index(webs)
+    ranking = index+1
+    rankings = "Google rank of your site is:"+str(ranking) #index+1)
+    #form = MyForm(request.POST)
+    # create a form instance and populate it with data from the request:
+    form = SubscribeForm(request.POST)
+    # check whether it's valid:
+    if form.is_valid():
+        name = form.cleaned_data['name']
+        web = form.cleaned_data['web']
+        p = Person(name=name, web=web, output=ranking, date_subscribed=datetime.now())
+        p.save()
+        # process the data in form.cleaned_data as required
+        
+        # redirect to a new URL:
+        return render(request, 'csv.html', {'form': form})
+  # if a GET (or any other method) we'll create a blank form    
+  else: 
+    form = SubscribeForm()
+
+  return render(request, 'csv.html', {'form': form})
+
+def datatable(request):
+    file = 'polls/static/data/database.csv'
+    df = pd.read_csv(file)
+    return render(request, 'datatable.html', {'columns': df.columns, 'rows': df.to_dict('records')})

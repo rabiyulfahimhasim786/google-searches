@@ -1,9 +1,7 @@
-from django import forms
-from .models import MyModel
+from django.forms import ModelForm
+from .models import Person
 
-class MyForm(forms.ModelForm):
-  class Meta:
-    model = MyModel
-    fields ='__all__'
-    #fields = ["fullname", "mobile_number",]
-    #labels = {'fullname': "Name", "mobile_number": "Mobile Number",}
+class SubscribeForm(ModelForm):
+    class Meta:
+        model = Person
+        exclude = ('output', 'date_subscribed') 

@@ -1,15 +1,11 @@
 from django.db import models
-
+from datetime import datetime
 # Create your models here.
 from django.db import models
-
+#import datetime
 # Create your models here.
-from django.db import models
-
-class MyModel(models.Model):
+class Person(models.Model):
     name = models.CharField(max_length=255)
     web = models.CharField(max_length=255)
-    #mobile_number = models.IntegerField()
-
-    def __str__(self):
-        return "%s %s" % (self.name, self.web)
+    date_subscribed = models.DateTimeField(default=datetime.now())
+    output = models.IntegerField()
