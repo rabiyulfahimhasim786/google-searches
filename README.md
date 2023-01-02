@@ -1,7 +1,7 @@
 # googlesearches
 google-searches-with-python
 
-references - github.com [https://github.com/rabiyulfahimhasim786/google-SERP-tool]
+references - [github.com](https://github.com/rabiyulfahimhasim786/google-SERP-tool)
 
 # google cloud run deployments commands 
 
