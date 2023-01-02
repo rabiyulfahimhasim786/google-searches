@@ -12,11 +12,11 @@ gcloud run deploy --image gcr.io/myprojets/dash-gsearch-serp --platform managed
 
 # how to get api keys
 
-https://developers.google.com/custom-search/v1/introduction - for cse key
+*[CSE key](https://developers.google.com/custom-search/v1/introduction)
 
-https://www.google.com/cse/all - for cx keys
+*[CX key](https://www.google.com/cse/all)
  
-https://stackoverflow.com/questions/6562125/getting-a-cx-id-for-custom-search-google-api-python - reference for cx keys
+*[References](https://stackoverflow.com/questions/6562125/getting-a-cx-id-for-custom-search-google-api-python) - references for cx and cse keys
 
 # Google Search Engine Results Pages Research
 
