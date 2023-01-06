@@ -124,8 +124,20 @@ def form_upload(request):
             #print(form.Document.document)
             #form.save()
             return redirect('csvs')
+    #else:
+    #    form = DocumentForm()
+    #return render(request, 'form_upload.html', {
+    #    'form': form
+    #})
     else:
         form = DocumentForm()
+        documents1 =Document.objects.all().order_by('-id')
     return render(request, 'form_upload.html', {
-        'form': form
+        'form': form, 'documents1': documents1
     })
+
+def delete_document(request,id):
+    if request.method == 'POST':
+        document = Document.objects.get(id=id)
+        document.delete()
+        return redirect('form_upload')
